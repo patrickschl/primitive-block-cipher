@@ -16,16 +16,6 @@ const INV_SBOX: [u8; 16] = [
     0x0, 0x7, 0x9, 0xA,
 ];
 
-fn input(text: &str) -> String {
-    print!("{}", text);
-    io::stdout().flush().unwrap();
-
-    let mut value = String::new();
-    io::stdin().read_line(&mut value).unwrap();
-
-    value.trim_end().to_string()
-}
-
 fn substitute(byte: u8) -> u8 {
     let high = SBOX[(byte >> 4) as usize];
     let low = SBOX[(byte & 0x0F) as usize];
@@ -41,7 +31,7 @@ fn inverse_substitute(byte: u8) -> u8 {
 }
 
 fn encrypt(plaintext: &[u8], key: &[u8]) -> Vec<u8> {
-    let mut result = Vec::new();
+    let mut result = Vec::new();  // cipher block
 
     for (block_number, block) in plaintext.chunks(BLOCK_SIZE).enumerate() {
         let mut block = block.to_vec();
@@ -64,7 +54,7 @@ fn encrypt(plaintext: &[u8], key: &[u8]) -> Vec<u8> {
 }
 
 fn decrypt(ciphertext: &[u8], key: &[u8]) -> Vec<u8> {
-    let mut result = Vec::new();
+    let mut result = Vec::new();  // plaintext block
 
     for (block_number, block) in ciphertext.chunks(BLOCK_SIZE).enumerate() {
         let mut block = block.to_vec();
@@ -84,6 +74,16 @@ fn decrypt(ciphertext: &[u8], key: &[u8]) -> Vec<u8> {
     }
 
     result
+}
+
+fn input(text: &str) -> String {
+    print!("{}", text);
+    io::stdout().flush().unwrap();
+
+    let mut value = String::new();
+    io::stdin().read_line(&mut value).unwrap();
+
+    value.trim_end().to_string()
 }
 
 fn to_hex(data: &[u8]) -> String {  // convert input to hex
