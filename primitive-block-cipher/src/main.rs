@@ -31,10 +31,10 @@ fn inverse_substitute(byte: u8) -> u8 {
 }
 
 fn encrypt(plaintext: &[u8], key: &[u8]) -> Vec<u8> {
-    let mut result = Vec::new();  // cipher block
+    let mut result = Vec::new();  // ciphertext
 
     for (block_number, block) in plaintext.chunks(BLOCK_SIZE).enumerate() {
-        let mut block = block.to_vec();
+        let mut block = block.to_vec();  // cipher block
 
         for byte in &mut block {
             *byte = substitute(*byte);  // substitution
@@ -54,10 +54,10 @@ fn encrypt(plaintext: &[u8], key: &[u8]) -> Vec<u8> {
 }
 
 fn decrypt(ciphertext: &[u8], key: &[u8]) -> Vec<u8> {
-    let mut result = Vec::new();  // plaintext block
+    let mut result = Vec::new();  // plaintext
 
     for (block_number, block) in ciphertext.chunks(BLOCK_SIZE).enumerate() {
-        let mut block = block.to_vec();
+        let mut block = block.to_vec();  // plaintext block
 
         block.reverse();  // transpose
 
