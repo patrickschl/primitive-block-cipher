@@ -2,10 +2,10 @@ Version 0.1.0
 
 # primitive-block-cipher
 
-`**Disclaimer:**`
-- `**THIS IS NOT SECURE!**`
-- `**DO NOT USE IN PRODUCTION!**`
-- `**NEVER WRITE YOUR OWN CRYPTO!!!!1!!**`
+**Disclaimer:**
+- **THIS IS NOT SECURE!**
+- **DO NOT USE IN PRODUCTION!**
+- **NEVER WRITE YOUR OWN CRYPTO!!!!1!!**
 
 ## How to
 
