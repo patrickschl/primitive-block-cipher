@@ -85,7 +85,7 @@ confusion and diffusion to make it secure.
 
 This picture illustrates the workflow of the algorithm:
 
-![Workflow](images/workflow.jpg)
+![Workflow](images/workflow.png)
 
 In a nutshell the Plaintext is chunked into 4 byte sized blocks
 and each block gets substituted, bytewise XOR'ed with a keybit and
