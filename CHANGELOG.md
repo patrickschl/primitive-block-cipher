@@ -1,7 +1,7 @@
-Current version: 0.1.1
+Current version: 0.2.0
 
 
-# 0.1.1
+# 0.2.0
 
 ### Changed
 - changed key integration to using different round keys for each round
