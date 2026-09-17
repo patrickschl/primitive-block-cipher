@@ -2,6 +2,8 @@ use std::io::{self, Write};
 
 const BLOCK_SIZE: usize = 4;
 
+const ENC_ROUNDS: usize = 3;
+
 const SBOX: [u8; 16] = [
     0xC, 0x5, 0x6, 0xB,
     0x9, 0x0, 0xA, 0xD,
@@ -36,16 +38,20 @@ fn encrypt(plaintext: &[u8], key: &[u8]) -> Vec<u8> {
     for (block_number, block) in plaintext.chunks(BLOCK_SIZE).enumerate() {
         let mut block = block.to_vec();  // cipher block
 
-        for byte in &mut block {
-            *byte = substitute(*byte);  // substitution
-        }
+        for round in 0..ENC_ROUNDS {
 
-        for i in 0..block.len() {
-            let key_index = block_number * BLOCK_SIZE + i;
-            block[i] ^= key[key_index % key.len()];  // XOR with key
-        }
+            for byte in &mut block {
+                *byte = substitute(*byte);  // substitution
+            }
 
-        block.reverse();  // transposition
+            for i in 0..block.len() {
+                let key_index =
+                    block_number * BLOCK_SIZE + round * BLOCK_SIZE + i;
+                block[i] ^= key[key_index % key.len()];  // XOR with key
+            }
+
+            block.reverse();  // transposition
+        }
 
         result.extend(block);
     }
@@ -59,15 +65,20 @@ fn decrypt(ciphertext: &[u8], key: &[u8]) -> Vec<u8> {
     for (block_number, block) in ciphertext.chunks(BLOCK_SIZE).enumerate() {
         let mut block = block.to_vec();  // plaintext block
 
-        block.reverse();  // transpose
+        for round in (0..ENC_ROUNDS).rev() {
 
-        for i in 0..block.len() {
-            let key_index = block_number * BLOCK_SIZE + i;
-            block[i] ^= key[key_index % key.len()];  // XOR with key
-        }
+            block.reverse();  // transpose
 
-        for byte in &mut block {
-            *byte = inverse_substitute(*byte);  // inverse substitution
+            for i in 0..block.len() {
+                let key_index =  // Split the given key into round keys so each block uses a different key each round
+                    block_number * BLOCK_SIZE + round * BLOCK_SIZE + i;
+                block[i] ^= key[key_index % key.len()];  // XOR with key
+            }
+
+            for byte in &mut block {
+                *byte = inverse_substitute(*byte);  // inverse substitution
+            }
+        
         }
 
         result.extend(block);
